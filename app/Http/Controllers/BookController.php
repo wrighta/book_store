@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BookCollection;
 use App\Models\Book;
 use Illuminate\Http\Request;
 
@@ -14,8 +15,11 @@ class BookController extends Controller
      */
     public function index()
     {
-        //
+        // $books = Book::all();
+        // return new BookCollection($books);
+       return new BookCollection(Book::all());
     }
+
 
     /**
      * Store a newly created resource in storage.

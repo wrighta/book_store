@@ -14,6 +14,11 @@ class BookResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'title' =>$this->title,
+            'author' => $this->author,
+            'likes' => $this->likes,
+        ];
     }
 }
