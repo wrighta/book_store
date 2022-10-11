@@ -42,11 +42,11 @@ class BookController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Book  $book
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\BookResource
      */
     public function show(Book $book)
     {
-        //
+        return new BookResource($book);
     }
 
     /**
