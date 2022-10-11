@@ -58,7 +58,11 @@ class BookController extends Controller
      */
     public function update(Request $request, Book $book)
     {
-        //
+        $book->update($request->only([
+            'title', 'description', 'category', 'author', 'likes'
+        ]));
+
+        return new BookResource($book);
     }
 
     /**
