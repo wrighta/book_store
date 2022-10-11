@@ -6,6 +6,7 @@ use App\Http\Resources\BookCollection;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class BookController extends Controller
 {
@@ -71,8 +72,15 @@ class BookController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
+
+    // Note $book parameter passed in here.
+    // If we had not enabled route model binding
+    // when creating Controller and Model (using --Model)
+    // there would only be a book Id passed in here, and we'd have to
+    // check to see if the book exist.
     public function destroy(Book $book)
     {
-        //
+        $book->delete();
+        return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 }
