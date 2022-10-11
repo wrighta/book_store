@@ -24,4 +24,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // so you can specfiy the routes individually
 Route::apiResource('/books', BookController::class);
 
-Route::resource('/authors', AuthorController::class)->only(['index', 'show']);
+// Route::resource('/authors', AuthorController::class)->only(['index', 'show']);
