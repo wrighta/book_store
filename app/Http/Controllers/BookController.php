@@ -13,6 +13,24 @@ class BookController extends Controller
     /**
      * Display a listing of the resource.
      *
+ * @OA\Get(
+ *     path="/api/books",
+ *     description="Displays all the books",
+ *     tags={"Books"},
+     *      @OA\Response(
+        *          response=200,
+        *          description="Successful operation, Returns a list of Books in JSON format"
+        *       ),
+        *      @OA\Response(
+        *          response=401,
+        *          description="Unauthenticated",
+        *      ),
+        *      @OA\Response(
+        *          response=403,
+        *          description="Forbidden"
+        *      )
+ * )
+     *
      * @return \Illuminate\Http\Response
      */
     public function index()
@@ -25,6 +43,32 @@ class BookController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     *
+     * @OA\Post(
+     *      path="/api/books",
+     *      operationId="store",
+     *      tags={"Books"},
+     *      summary="Create a new Book",
+     *      description="Stores the book in the DB",
+     *      @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *            required={"title", "category", "description", "author", "likes"},
+     *            @OA\Property(property="title", type="string", format="string", example="Sample Title"),
+     *            @OA\Property(property="category", type="string", format="string", example="Autobiography"),
+     *            @OA\Property(property="description", type="string", format="string", example="A long description about this great book"),
+     *            @OA\Property(property="author", type="string", format="string", example="Me"),
+     *             @OA\Property(property="likes", type="integer", format="integer", example="1")
+     *          )
+     *      ),
+     *     @OA\Response(
+     *          response=200, description="Success",
+     *          @OA\JsonContent(
+     *             @OA\Property(property="status", type="integer", example=""),
+     *             @OA\Property(property="data",type="object")
+     *          )
+     *     )
+     * )
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\BookResource
@@ -41,7 +85,31 @@ class BookController extends Controller
 
     /**
      * Display the specified resource.
-     *
+     * @OA\Get(
+    *     path="/api/books/{id}",
+    *     description="Gets a book by ID",
+    *     tags={"Books"},
+    *          @OA\Parameter(
+        *          name="id",
+        *          description="Book id",
+        *          required=true,
+        *          in="path",
+        *          @OA\Schema(
+        *              type="integer")
+     *          ),
+        *      @OA\Response(
+        *          response=200,
+        *          description="Successful operation"
+        *       ),
+        *      @OA\Response(
+        *          response=401,
+        *          description="Unauthenticated",
+        *      ),
+        *      @OA\Response(
+        *          response=403,
+        *          description="Forbidden"
+        *      )
+ * )
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\BookResource
      */
@@ -67,6 +135,28 @@ class BookController extends Controller
     }
 
     /**
+     *
+     *
+     * @OA\Delete(
+     *    path="/api/books/{id}",
+     *    operationId="destroy",
+     *    tags={"Books"},
+     *    summary="Delete a Book",
+     *    description="Delete Book",
+     *    @OA\Parameter(name="id", in="path", description="Id of a Book", required=true,
+     *        @OA\Schema(type="integer")
+     *    ),
+     *    @OA\Response(
+     *         response=Response::HTTP_NO_CONTENT,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *         @OA\Property(property="status_code", type="integer", example="204"),
+     *         @OA\Property(property="data",type="object")
+     *          ),
+     *       )
+     *      )
+     *  )
+
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Book  $book
