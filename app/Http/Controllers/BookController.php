@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\BookCollection;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
+use App\Models\Publisher;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -35,11 +36,9 @@ class BookController extends Controller
      */
     public function index()
     {
-        // $books = Book::all();
-        // return new BookCollection($books);
-       return new BookCollection(Book::all());
+        // return new BookCollection(Book::all());
+        return new BookCollection(Book::with('publisher')->get());
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -75,10 +74,24 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
+        $book_image = $request->file('book_image');
+        $extension = $book_image->getClientOriginalExtension();
+        // the filename needs to be unique, I use title and add the date to guarantee a unique filename, ISBN would be better here.
+        $filename = date('Y-m-d-His') . '_' . $request->input('title') . '.'. $extension;
 
-        $book = Book::create($request->only([
-            'title', 'description', 'category', 'author', 'likes'
-        ]));
+        // store the file $book_image in /public/images, and name it $filename
+        $path = $book_image->storeAs('public/images', $filename);
+
+        $book = Book::create([
+            'title' => $request->title,
+            'category' => $request->category,
+            'description' => $request->description,
+            'author' => $request->author,
+            'book_image' => $filename,
+            'likes' => $request->likes,
+            'publisher_id' => $request->publisher_id
+        ]);
+
 
         return new BookResource($book);
     }
@@ -127,9 +140,22 @@ class BookController extends Controller
      */
     public function update(Request $request, Book $book)
     {
+        $book_image = $request->file('book_image');
+        $extension = $book_image->getClientOriginalExtension();
+        // the filename needs to be unique, I use title and add the date to guarantee a unique filename, ISBN would be better here.
+        $filename = date('Y-m-d-His') . '_' . $request->input('title') . '.'. $extension;
+
+        // store the file $book_image in /public/images, and name it $filename
+        $path = $book_image->storeAs('public/images', $filename);
+
+
         $book->update($request->only([
-            'title', 'description', 'category', 'author', 'likes'
+            'title', 'description', 'category', 'author', 'likes', 'publisher_id'
         ]));
+
+        $book->update([
+            'book_image' => $filename]
+        );
 
         return new BookResource($book);
     }
