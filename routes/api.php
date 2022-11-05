@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\PublisherController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,5 +24,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // if you are not providing all actions the you don't need all the routes
 // so you can specfiy the routes individually
 Route::apiResource('/books', BookController::class);
+
+// this line create all routes for PublisherController
+Route::apiResource('/publishers', PublisherController::class);
 
 // Route::resource('/authors', AuthorController::class)->only(['index', 'show']);

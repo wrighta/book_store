@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Publisher;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,6 +23,7 @@ class BookFactory extends Factory
             'description' => $this->faker->text(200),
             'author' => $this->faker->name,
             'likes' => $this->faker->numberBetween(0, 1000000),
+            //  'publisher_id' => Publisher::factory()
         ];
     }
 }
