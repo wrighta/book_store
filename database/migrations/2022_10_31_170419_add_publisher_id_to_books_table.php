@@ -29,7 +29,7 @@ return new class extends Migration
         Schema::table('books', function (Blueprint $table) {
 
             $table->dropForeign(['publisher_id']);
-             $table->dropColumn('publisher_id');
+            $table->dropColumn('publisher_id');
         });
     }
 };
