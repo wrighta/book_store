@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreBookRequest;
 use App\Http\Resources\BookCollection;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
@@ -37,7 +38,9 @@ class BookController extends Controller
     public function index()
     {
         // return new BookCollection(Book::all());
-        return new BookCollection(Book::with('publisher')->get());
+        return new BookCollection(Book::with('publisher')
+        ->with('authors')
+        ->get());
     }
 
     /**
@@ -69,10 +72,10 @@ class BookController extends Controller
      *     )
      * )
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\StoreBookRequest  $request
      * @return \Illuminate\Http\BookResource
      */
-    public function store(Request $request)
+    public function store(StoreBookRequest $request)
     {
         $book_image = $request->file('book_image');
         $extension = $book_image->getClientOriginalExtension();
@@ -86,14 +89,15 @@ class BookController extends Controller
             'title' => $request->title,
             'category' => $request->category,
             'description' => $request->description,
-            'author' => $request->author,
             'book_image' => $filename,
             'likes' => $request->likes,
             'publisher_id' => $request->publisher_id
         ]);
 
 
-        return new BookResource($book);
+       $book->authors()->attach($request->authors);
+
+       return new BookResource($book);
     }
 
     /**
@@ -150,7 +154,7 @@ class BookController extends Controller
 
 
         $book->update($request->only([
-            'title', 'description', 'category', 'author', 'likes', 'publisher_id'
+            'title', 'description', 'category', 'likes', 'publisher_id'
         ]));
 
         $book->update([
