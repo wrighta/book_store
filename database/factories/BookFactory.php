@@ -21,7 +21,7 @@ class BookFactory extends Factory
             'title' => $this->faker->word,
             'category' => $this->faker->text(50),
             'description' => $this->faker->text(200),
-            'author' => $this->faker->name,
+     //       'author' => $this->faker->name,
             'likes' => $this->faker->numberBetween(0, 1000000),
             //  'publisher_id' => Publisher::factory()
         ];
